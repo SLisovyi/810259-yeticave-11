@@ -1,7 +1,7 @@
 <?php
 $is_auth = rand(0, 1);
 
-$user_name = 'Sergii'; // укажите здесь ваше имя
+$user_name = 'Sergii';
 
 $categorie_list = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 
@@ -9,37 +9,37 @@ $lot_list = [
     [
         'name' => '2014 Rossignol District Snowboard',
         'cat_name' => 'Доски и лыжи',
-        'price' => '10999',
+        'price' => 10999,
         'img_url' => 'img/lot-1.jpg'
     ],
     [
         'name' => 'DC Ply Mens 2016/2017 Snowboard',
         'cat_name' => 'Доски и лыжи',
-        'price' => '159999',
+        'price' => 159999,
         'img_url' => 'img/lot-2.jpg'
     ],
     [
         'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
         'cat_name' => 'Крепления',
-        'price' => '8000',
+        'price' => 8000,
         'img_url' => 'img/lot-3.jpg'
     ],
     [
         'name' => 'Ботинки для сноуборда DC Mutiny Charocal',
         'cat_name' => 'Ботинки',
-        'price' => '10999',
+        'price' => 10999,
         'img_url' => 'img/lot-4.jpg'
     ],
     [
         'name' => 'Куртка для сноуборда DC Mutiny Charocal',
         'cat_name' => 'Одежда',
-        'price' => '7500',
+        'price' => 7500,
         'img_url' => 'img/lot-5.jpg'
     ],
     [
         'name' => 'Маска Oakley Canopy',
         'cat_name' => 'Разное',
-        'price' => '5400',
+        'price' => 5400,
         'img_url' => 'img/lot-6.jpg'
     ]
 ];
@@ -69,8 +69,6 @@ $lot_list = [
         <a class="main-header__add-lot button" href="pages/add-lot.html">Добавить лот</a>
 
         <nav class="user-menu">
-
-        <!-- здесь должен быть PHP код для показа меню и данных пользователя -->
 
             <!-- пользователь залогинин -->
             <?php if ($is_auth === 1): ?>
@@ -102,7 +100,6 @@ $lot_list = [
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
 
-            <!--заполните этот список из массива категорий-->
             <?php foreach($categorie_list as $cat): ?>
             <li class="promo__item promo__item--boards">
                 <a class="promo__link" href="pages/all-lots.html"><?=$cat; ?></a>
@@ -117,7 +114,6 @@ $lot_list = [
         </div>
         <ul class="lots__list">
 
-            <!--заполните этот список из массива с товарами-->
             <?php foreach($lot_list as $item): ?>
             <li class="lots__item lot">
                 <div class="lot__image">
@@ -147,7 +143,6 @@ $lot_list = [
     <nav class="nav">
         <ul class="nav__list container">
 
-            <!--заполните этот список из массива категорий-->
             <?php foreach($categorie_list as $cat): ?>
             <li class="nav__item">
                 <a href="pages/all-lots.html"><?=$cat; ?></a>

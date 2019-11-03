@@ -3,7 +3,14 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Sergii';
 
-$categorie_list = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
+$categorie_list = [
+    ['name' => 'Доски и лыжи'],
+    ['name' => 'Крепления'],
+    ['name' => 'Ботинки'],
+    ['name' => 'Одежда'],
+    ['name' => 'Инструменты'],
+    ['name' => 'Разное']
+];
 
 $lot_list = [
     [
@@ -102,7 +109,7 @@ $lot_list = [
 
             <?php foreach($categorie_list as $cat): ?>
             <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?=$cat; ?></a>
+                <a class="promo__link" href="pages/all-lots.html"><?=$cat['name']; ?></a>
             </li>
             <?php endforeach; ?>  
 
@@ -145,7 +152,7 @@ $lot_list = [
 
             <?php foreach($categorie_list as $cat): ?>
             <li class="nav__item">
-                <a href="pages/all-lots.html"><?=$cat; ?></a>
+                <a href="pages/all-lots.html"><?=$cat['name']; ?></a>
             </li>
             <?php endforeach; ?>
 

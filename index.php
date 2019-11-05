@@ -51,6 +51,14 @@ $lot_list = [
     ]
 ];
 
+// function number to price
+function to_price ($amount) {
+    $amount = ceil($amount);
+    $amount = number_format($amount, 0, '.', ' ');
+    $amount .= '₽';
+    return $amount;   
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -132,7 +140,7 @@ $lot_list = [
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=$item['price']; ?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?=to_price($item['price']); ?></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23

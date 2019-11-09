@@ -26,7 +26,7 @@
             <!-- пользователь залогинин -->
             <?php if ($is_auth === 1): ?>
             <div class="user-menu__logged">
-                <p><?=$user_name; ?></p>
+                <p><?=esc($user_name); ?></p>
                 <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
                 <a class="user-menu__logout" href="#">Выход</a>
             </div>
@@ -48,15 +48,14 @@
 </header>
     
 <main class="container"><?=$content; ?></main>
-</div>
 
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
 
-            <?php foreach($categoris as $cat): ?>
+            <?php foreach($categories as $cat): ?>
             <li class="nav__item">
-                <a href="pages/all-lots.html"><?=$cat; ?></a>
+                <a href="pages/all-lots.html"><?=esc($cat['name']); ?></a>
             </li>
             <?php endforeach; ?>
 

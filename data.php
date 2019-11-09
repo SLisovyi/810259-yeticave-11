@@ -12,11 +12,11 @@ $categories = [
     ['name' => 'Разное']
 ];
 
-$lot_list = [
+$lots = [
     [
         'name' => '2014 Rossignol District Snowboard',
         'cat_name' => 'Доски и лыжи',
-        'price' => 10999,
+        'price' => '10999',
         'img_url' => 'img/lot-1.jpg'
     ],
     [
@@ -50,4 +50,3 @@ $lot_list = [
         'img_url' => 'img/lot-6.jpg'
     ]
 ];
-

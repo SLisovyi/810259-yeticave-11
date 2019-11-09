@@ -3,8 +3,8 @@
         <img src="<?=$lot['img_url']; ?>" width="350" height="260" alt="<?=$lot['name']; ?>">
     </div>
     <div class="lot__info">
-        <span class="lot__category"><?=$lot['cat_name']; ?></span>
-        <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$lot['name']; ?></a></h3>
+        <span class="lot__category"><?=esc($lot['cat_name']); ?></span>
+        <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=esc($lot['name']); ?></a></h3>
         <div class="lot__state">
             <div class="lot__rate">
                 <span class="lot__amount">Стартовая цена</span>

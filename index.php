@@ -1,16 +1,7 @@
 <?php
 
-require_once('functions.php');
-require_once('data.php');
-
-function show_date($timestamp) {
-    $dt = date_create();
-    $dt = date_time_set($dt, $timestamp);
-
-    $format = date_format($dt, "d.m.Y H:i");
-
-    return $format;
-}
+require_once 'functions.php';
+require_once 'data.php';
 
 $page_content = include_template('main.php', [
     'lots' => $lots,

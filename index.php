@@ -1,15 +1,8 @@
 <?php
 
-date_default_timezone_set("Europe/Moscow");
-
-
-
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
-
-
-
 
 $page_content = include_template('main.php', [
     'lots' => $lots,
@@ -25,6 +18,3 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-
-
-

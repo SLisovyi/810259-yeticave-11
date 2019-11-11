@@ -29,11 +29,10 @@ function get_time_end($time) {
     return $time_end;
 }
 
-function get_end_class($hour) {
-    $time_interval = strtotime($hour) - time();
-    $hours = floor($time_interval / 3600);
+function get_end_class($time) {
+    $hour = get_time_end($time);
 
-    if ($hours < 1) {
+    if ($hour[0] < 1) {
         $end_class = 'timer--finishing';
     } else {
         $end_class = null;
@@ -41,4 +40,3 @@ function get_end_class($hour) {
     
     return $end_class;
 }
-

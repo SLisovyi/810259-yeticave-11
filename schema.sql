@@ -1,41 +1,44 @@
-CREATE DATABASE yeticave
+CREATE DATABASE 810259_yeticave_11
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
-  USE yeticave;
+  USE 810259_yeticave_11;
 
 CREATE TABLE user (
-  id                INT AUTO_INCREMENT PRIMARY KEY,
-  date_add          DATETIME,
+  id                INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  date_add          DATETIME NOT NULL,
   email             VARCHAR(128) NOT NULL UNIQUE,
-  user_name         VARCHAR(128),
-  password          CHAR(64),
-  contact           TEXT,
-  user_id           INT
+  name              VARCHAR(128) NOT NULL,
+  password          CHAR(64) NOT NULL,
+  contact           TEXT NOT NULL,
+  lot_id            INT NOT NULL,
+  bid_id            INT NOT NULL
 );
 
 CREATE TABLE lot (
-  id              INT AUTO_INCREMENT PRIMARY KEY,
-  date_add        DATETIME,
-  lot_name        VARCHAR(255),
-  description     TEXT,
-  img_url         TEXT,
-  price           INT,
-  end_date        DATETIME,
-  bid_step        INT,
-  lot_id          INT
+  id              INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  date_add        DATETIME NOT NULL,
+  name            VARCHAR(128) NOT NULL,
+  description     TEXT NOT NULL,
+  img_url         VARCHAR(128) NOT NULL,
+  price           INT NOT NULL,
+  end_date        DATETIME NOT NULL,
+  bid_step        INT NOT NULL,
+  user_id         INT NOT NULL,
+  winner_id       INT NOT NULL,
+  categorie_id    INT NOT NULL
 );
 
 CREATE TABLE bid (
-  id              INT AUTO_INCREMENT PRIMARY KEY,
-  date_add        DATETIME,
-  price           INT,
-  bid_id          INT
+  id              INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  date_add        DATETIME NOT NULL,
+  price           INT NOT NULL,
+  user_id         INT NOT NULL,
+  lot_id          INT NOT NULL
 );
 
 CREATE TABLE categorie (
-  id              INT AUTO_INCREMENT PRIMARY KEY,
-  name            VARCHAR(64),
-  character_code  INT,
-  categorie_id    INT
+  id              INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  name            VARCHAR(64) NOT NULL,
+  character_code  INT NOT NULL
 );

@@ -31,8 +31,8 @@ function get_end_class($time) {
     [$hour] = get_time_end($time);
 
     if ($hour == 0) {
-        $end_class = 'timer--finishing';
-
-        return $end_class;
+        return 'timer--finishing';
     }
+    
+    return '';
 }

@@ -1,4 +1,4 @@
-CREATE DATABASE 810259_yeticave_11
+CREATE DATABASE 810259-yeticave-11
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
@@ -10,9 +10,7 @@ CREATE TABLE user (
   email             VARCHAR(128) NOT NULL UNIQUE,
   name              VARCHAR(128) NOT NULL,
   password          CHAR(64) NOT NULL,
-  contact           TEXT NOT NULL,
-  lot_id            INT NOT NULL,
-  bid_id            INT NOT NULL
+  contact           TEXT NOT NULL
 );
 
 CREATE TABLE lot (
@@ -25,8 +23,9 @@ CREATE TABLE lot (
   end_date        DATETIME NOT NULL,
   bid_step        INT NOT NULL,
   user_id         INT NOT NULL,
-  winner_id       INT NOT NULL,
-  categorie_id    INT NOT NULL
+  categorie_id    INT NOT NULL,
+  bid_id          INT,
+  winner_id       INT
 );
 
 CREATE TABLE bid (

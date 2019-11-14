@@ -1,4 +1,4 @@
-CREATE DATABASE 810259-yeticave-11
+CREATE DATABASE 810259_yeticave_11
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
@@ -19,7 +19,8 @@ CREATE TABLE lot (
   name            VARCHAR(128) NOT NULL,
   description     TEXT NOT NULL,
   img_url         VARCHAR(128) NOT NULL,
-  price           INT NOT NULL,
+  first_price     INT NOT NULL,
+  last_price      INT NOT NULL,
   end_date        DATETIME NOT NULL,
   bid_step        INT NOT NULL,
   user_id         INT NOT NULL,

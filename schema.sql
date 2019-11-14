@@ -1,8 +1,8 @@
-CREATE DATABASE 810259_yeticave_11
+CREATE DATABASE `810259-yeticave-11`
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
-  USE 810259_yeticave_11;
+  USE `810259-yeticave-11`;
 
 CREATE TABLE user (
   id                INT AUTO_INCREMENT PRIMARY KEY NOT NULL,

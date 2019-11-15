@@ -24,9 +24,8 @@ CREATE TABLE lot (
   end_date        DATETIME NOT NULL,
   bid_step        INT NOT NULL,
   user_id         INT NOT NULL,
-  categorie_id    INT NOT NULL,
-  bid_id          INT,
-  winner_id       INT
+  category_id     INT NOT NULL,
+  winner_id       INT DEFAULT NULL
 );
 
 CREATE TABLE bid (
@@ -37,7 +36,7 @@ CREATE TABLE bid (
   lot_id          INT NOT NULL
 );
 
-CREATE TABLE categorie (
+CREATE TABLE category (
   id              INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   name            VARCHAR(64) NOT NULL,
   character_code  INT NOT NULL

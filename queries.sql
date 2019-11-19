@@ -1,16 +1,16 @@
 -- добавим категорию в таблицу categorie
 INSERT INTO category
-SET name = 'Доски и лыжи', character_code = 111;
+SET name = 'Доски и лыжи', character_code = 'boards';
 INSERT INTO category
-SET name = 'Крепления', character_code = 112;
+SET name = 'Крепления', character_code = 'attachment';
 INSERT INTO category
-SET name = 'Ботинки', character_code = 113;
+SET name = 'Ботинки', character_code = 'boots';
 INSERT INTO category
-SET name = 'Одежда', character_code = 114;
+SET name = 'Одежда', character_code = 'clothing';
 INSERT INTO category
-SET name = 'Инструменты', character_code = 115;
+SET name = 'Инструменты', character_code = 'tools';
 INSERT INTO category
-SET name = 'Разное', character_code = 115;
+SET name = 'Разное', character_code = 'other';
 
 -- добавим нового пользователя в таблицу users
 INSERT INTO user
@@ -43,7 +43,6 @@ name = '2014 Rossignol District Snowboard',
 description = 'Сегодня вы напишите SQL-запросы для выполнения основных действий: вставка данных, чтение и поиск, обновление. В дальнейшем вы задействуете эти запросы в своих PHP-сценариях для интеграции с базой данных. Запросы должны работать с таблицами, которые вы сделали в прошлом задании.',
 img_url = 'img/lot-1.jpg',
 first_price = 10999,
-last_price = 10999,
 end_date = '2019-11-14',
 bid_step = 200,
 user_id = 2,
@@ -56,7 +55,6 @@ date_add = NOW(),
 name = 'DC Ply Mens 2016/2017 Snowboard',
 description = 'Сегодня вы напишите SQL-запросы для выполнения основных действий: вставка данных, чтение и поиск, обновление.',
 first_price = 159999,
-last_price = 169999,
 img_url = 'img/lot-2.jpg',
 end_date = '2019-12-18',
 bid_step = 500,
@@ -70,7 +68,6 @@ date_add = NOW(),
 name = 'Крепления Union Contact Pro 2015 года размер L/XL',
 description = 'Сегодня напишите SQL-запросы для выполнения основных действий: вставка данных, чтение и поиск, обновление.',
 first_price = 8000,
-last_price = 8000,
 img_url = 'img/lot-4.jpg',
 end_date = '2019-11-17',
 bid_step = 50,
@@ -83,7 +80,6 @@ date_add = NOW(),
 name = 'Ботинки для сноуборда DC Mutiny Charocal',
 description = 'Сегодня для выполнения основных действий: вставка данных, чтение и поиск, обновление.',
 first_price = 10999,
-last_price = 11099,
 img_url = 'img/lot-4.jpg',
 end_date = '2019-12-09',
 bid_step = 100,
@@ -96,7 +92,6 @@ date_add = NOW(),
 name = 'Куртка для сноуборда DC Mutiny Charocal',
 description = 'Сегодня для выполнения основных действий: вставка данных, чтение и поиск, обновление.',
 first_price = 7500,
-last_price = 8050,
 img_url = 'img/lot-5.jpg',
 end_date = '2019-11-19',
 bid_step = 50,
@@ -109,7 +104,6 @@ date_add = NOW(),
 name = 'Маска Oakley Canopy',
 description = 'Сегодня для выполнения основных действий: вставка данных, чтение и поиск, обновление.',
 first_price = 5400,
-last_price = 5550,
 img_url = 'img/lot-5.jpg',
 end_date = '2019-11-19',
 bid_step = 50,
@@ -120,22 +114,54 @@ category_id = 6;
 INSERT INTO bid
 SET
 date_add = NOW(),
-price = 200,
+price = 11199,
 user_id = 2,
+lot_id = 1;
+
+INSERT INTO bid
+SET
+date_add = NOW(),
+price = 11399,
+user_id = 1,
+lot_id = 1;
+
+INSERT INTO bid
+SET
+date_add = NOW(),
+price = 160499,
+user_id = 3,
 lot_id = 2;
 
 INSERT INTO bid
 SET
 date_add = NOW(),
-price = 100,
+price = 160999,
 user_id = 1,
 lot_id = 2;
+
+INSERT INTO bid
+SET
+date_add = NOW(),
+price = 8050,
+user_id = 2,
+lot_id = 3;
+
+INSERT INTO bid
+SET
+date_add = NOW(),
+price = 8100,
+user_id = 1,
+lot_id = 3;
 
 -- получить все категории
 SELECT * FROM category;
 
 -- получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, текущую цену, название категории
-SELECT name, first_price, img_url, last_price, category_id FROM lot ORDER BY date_add ASC ;
+SELECT l.name, l.first_price, l.img_url, 
+(SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
+l.category_id
+FROM lot l;
+
 
 -- показать лот по его id. Получите также название категории, к которой принадлежит лот
 SELECT l.*, u.name FROM lot l

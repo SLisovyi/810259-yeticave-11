@@ -20,7 +20,6 @@ CREATE TABLE lot (
   description     TEXT NOT NULL,
   img_url         VARCHAR(128) NOT NULL,
   first_price     INT NOT NULL,
-  last_price      INT NOT NULL,
   end_date        DATETIME NOT NULL,
   bid_step        INT NOT NULL,
   user_id         INT NOT NULL,
@@ -39,5 +38,5 @@ CREATE TABLE bid (
 CREATE TABLE category (
   id              INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   name            VARCHAR(64) NOT NULL,
-  character_code  INT NOT NULL
+  character_code  VARCHAR(64) NOT NULL
 );

@@ -36,3 +36,12 @@ function get_end_class($time) {
     
     return '';
 }
+
+// функция получения данных из БД
+function get_db_array($link, $query) {
+    $result_query = mysqli_query($link, $query);
+    if ($result_query) {
+       $result = mysqli_fetch_all($result_query, MYSQLI_ASSOC);
+    }
+    return $result;
+}

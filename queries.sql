@@ -157,12 +157,11 @@ lot_id = 3;
 SELECT * FROM category;
 
 -- получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, текущую цену, название категории
-SELECT l.name, l.first_price, l.img_url, 
-(SELECT c.name FROM category c WHERE c.id = l.category_id ) as cat_name,
+SELECT l.name, l.first_price, l.img_url, c.name AS category_name, l.end_date,
 (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
 l.category_id
-FROM lot l WHERE l.end_date > NOW();
-
+FROM lot l INNER JOIN category c ON c.id = l.category_id
+WHERE l.end_date > NOW();
 
 -- показать лот по его id. Получите также название категории, к которой принадлежит лот
 SELECT l.*, u.name FROM lot l

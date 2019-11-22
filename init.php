@@ -9,4 +9,7 @@ if (!$link) {
     $error = mysqli_connect_error();
     $content = include_template('error.php', ['error' => $error]);
     die('Ошибка соединения: ' . mysql_error());
+} else {
+    echo 'Успешно соединились';
+    mysql_close($link);
 }

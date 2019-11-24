@@ -54,11 +54,29 @@ function get_db_categories($link) {
 // функция получения $lots array из БД
 function get_db_lots($link) {
 
-    $sql = 'SELECT l.name, l.first_price, l.img_url, c.name AS category_name, l.end_date,
+    $sql = 'SELECT l.id, l.name, l.first_price, l.img_url, c.name AS category_name, l.end_date,
     (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
     l.category_id
     FROM lot l INNER JOIN category c ON c.id = l.category_id
     WHERE l.end_date > NOW()';
+
+    $result_query = mysqli_query($link, $sql);
+    
+    if ($result_query) {
+       $result = mysqli_fetch_all($result_query, MYSQLI_ASSOC); 
+       return $result; 
+    }
+    return '';
+}
+
+// функция получения необходимого $lot array из БД для pages/lot.php
+function get_db_lot($link) {
+
+    $sql = 'SELECT l.id, l.name, l.first_price, l.img_url, c.name AS category_name, l.end_date,
+    (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
+    l.category_id
+    FROM lot l INNER JOIN category c ON c.id = l.category_id
+    WHERE l.id =' . $id . ';';
 
     $result_query = mysqli_query($link, $sql);
     

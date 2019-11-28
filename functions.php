@@ -70,13 +70,13 @@ function get_db_lots($link) {
 }
 
 // функция получения необходимого $lot array из БД для pages/lot.php
-function get_db_lot($link) {
+function get_db_lot($link, $id) {
 
-    $sql = 'SELECT l.id, l.name, l.first_price, l.img_url, c.name AS category_name, l.end_date,
-    (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
-    l.category_id
-    FROM lot l INNER JOIN category c ON c.id = l.category_id
-    WHERE l.id =' . $id . ';';
+    $sql = 'SELECT l.name, l.description, l.first_price, l.img_url, c.name AS category_name, l.end_date,
+         (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
+         l.category_id
+        FROM lot l INNER JOIN category c ON c.id = l.category_id
+        WHERE l.id = ' . $id . ';';
 
     $result_query = mysqli_query($link, $sql);
     
@@ -85,4 +85,13 @@ function get_db_lot($link) {
        return $result; 
     }
     return '';
+}
+
+// функция вывода конечной цены лота
+function get_last_price($price_first, $price_end) {
+    if ($price_end === null) {
+        return to_price($price_first);
+    } else {
+        return to_price($price_end);
+    }
 }

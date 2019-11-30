@@ -1,3 +1,9 @@
+    <?php 
+    require_once 'functions.php';
+    require_once 'data.php';
+
+    ?>
+    
     <nav class="nav">
       <ul class="nav__list container">
       <?php foreach($categories as $cat): ?>

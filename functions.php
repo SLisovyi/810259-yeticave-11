@@ -69,7 +69,7 @@ function get_db_lots($link) {
     return '';
 }
 
-// функция получения необходимого $lot array из БД для pages/lot.php
+// функция получения необходимого $lot array из БД для template/lot.php
 function get_db_lot($link, $id) {
 
     $sql = 'SELECT l.name, l.description, l.first_price, l.img_url, c.name AS category_name, l.end_date,
@@ -77,6 +77,22 @@ function get_db_lot($link, $id) {
          l.category_id
         FROM lot l INNER JOIN category c ON c.id = l.category_id
         WHERE l.id = ' . $id . ';';
+
+    $result_query = mysqli_query($link, $sql);
+    
+    if ($result_query) {
+       $result = mysqli_fetch_all($result_query, MYSQLI_ASSOC); 
+       return $result; 
+    }
+    return '';
+}
+
+// функция получения необходимого $lot id
+function get_lot_id($link, $id) {
+
+    $sql = 'SELECT ' . $id . '
+FROM lot
+WHERE end_date > NOW();';
 
     $result_query = mysqli_query($link, $sql);
     

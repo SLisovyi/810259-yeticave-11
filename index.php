@@ -12,22 +12,10 @@ $categories = get_db_categories($link);
 // берем из БД список открытых лотов и превращаем в двумерный массив
 $lots = get_db_lots($link);
 
-
-$id = filter_input(INPUT_GET, 'tab'); // находим tab html заголовка
-
-if ($id) { // если tab есть, меняем main на lot.php
-    $lot = get_db_lot($link, $id);
-
-    $page_content = include_template('lot.php', [
-        'lot' => $lot,
-        'categories' => $categories
-    ]);
-} else {
     $page_content = include_template('main.php', [
         'lots' => $lots,
         'categories' => $categories
     ]);
-}
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

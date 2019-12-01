@@ -3,7 +3,6 @@
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
-
 require_once 'init.php'; // подключаем БД
 
 // берем из БД список категорий и превращаем в двумерный массив

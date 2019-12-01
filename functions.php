@@ -69,14 +69,14 @@ function get_db_lots($link) {
     return '';
 }
 
-// функция получения необходимого $lot array из БД для template/lot.php
-function get_db_lot($link, $id) {
+// функция получения $lot array из БД для template/lot.php
+function get_db_lot($link) {
 
-    $sql = 'SELECT l.name, l.description, l.first_price, l.img_url, c.name AS category_name, l.end_date,
-         (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
-         l.category_id
-        FROM lot l INNER JOIN category c ON c.id = l.category_id
-        WHERE l.id = ' . $id . ';';
+    $sql = 'SELECT l.name, l.first_price, l.img_url, c.name, l.description, c.name AS category_name, l.end_date,
+    (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
+    l.category_id
+    FROM lot l INNER JOIN category c ON c.id = l.category_id
+    WHERE l.end_date > NOW();';
 
     $result_query = mysqli_query($link, $sql);
     
@@ -87,12 +87,14 @@ function get_db_lot($link, $id) {
     return '';
 }
 
-// функция получения необходимого $lot id
+// функция получения необходимого $lot по id
 function get_lot_id($link, $id) {
 
-    $sql = 'SELECT ' . $id . '
-FROM lot
-WHERE end_date > NOW();';
+    $sql = 'SELECT l.name, l.description, l.first_price, l.img_url, c.name AS category_name, l.end_date,
+         (SELECT b.price FROM bid b WHERE b.lot_id = l.id ORDER BY b.price ASC LIMIT 1) as last_price,
+         l.category_id
+        FROM lot l INNER JOIN category c ON c.id = l.category_id
+        WHERE end_date > NOW() and  l.id = ' . $id . ';';
 
     $result_query = mysqli_query($link, $sql);
     

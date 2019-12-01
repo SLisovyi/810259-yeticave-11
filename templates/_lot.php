@@ -12,7 +12,7 @@
                     <?=get_last_price($lot['first_price'], $lot['last_price']); ?>
                 </span>
             </div>
-            <div class="lot__timer timer <?=get_end_class($lot['date_end'])?>">
+            <div class="lot__timer timer <?=get_end_class($lot['end_date'])?>">
                 <?=implode(':', get_time_end($lot['end_date'])); ?>
             </div>
         </div>

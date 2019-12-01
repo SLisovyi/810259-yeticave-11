@@ -1,4 +1,6 @@
 <?php 
+
+require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'init.php'; // подключаем БД
 
@@ -6,16 +8,14 @@ $categories = get_db_categories($link); // берем из БД список к�
 
 $id = filter_input(INPUT_GET, 'id'); // находим id html заголовка
 
-// берем из БД список открытых лотов и превращаем в двумерный массив
-// $lots = get_db_lots($link);
-
 $lot_id = get_lot_id($link, $id);
 
-if (is_array($lot_id)) { // если lot активный
-  $lot = get_db_lot($link, $id);
+if (!empty($lot_id)) { // если lot активный
+  $lot = $lot_id;
 } 
 else {
-  $layout_content = include_template('../pages/404.html');
+  header('location:pages/404.html');
+  // $layout_content = include_template('pages/404.html');
 }
 
 ?>
@@ -84,8 +84,8 @@ else {
         </div>
         <div class="lot-item__right">
           <div class="lot-item__state">
-            <div class="lot-item__timer timer">
-              10:54
+            <div class="lot-item__timer timer <?=get_end_class($lot['end_date'])?>">
+              <?=implode(':', get_time_end($lot['end_date'])); ?>
             </div>
             <div class="lot-item__cost-state">
               <div class="lot-item__rate">

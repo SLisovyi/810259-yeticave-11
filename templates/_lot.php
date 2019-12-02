@@ -9,7 +9,7 @@
             <div class="lot__rate">
                 <span class="lot__amount">Стартовая цена</span>
                 <span class="lot__cost">
-                    <?=get_last_price($lot['first_price'], $lot['last_price']); ?>
+                    <?=to_price(get_last_price($lot)); ?>
                 </span>
             </div>
             <div class="lot__timer timer <?=get_end_class($lot['end_date'])?>">

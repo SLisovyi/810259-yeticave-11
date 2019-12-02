@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set("Europe/Moscow");
+
 require_once 'config/db.php';
 
 $link = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);

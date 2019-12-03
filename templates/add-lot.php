@@ -2,142 +2,114 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title><?=$lot['name'];?></title>
+  <title>Добавление лота</title>
   <link href="../css/normalize.min.css" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
+  <link href="../css/flatpickr.min.css" rel="stylesheet">
 </head>
 <body>
+
 <div class="page-wrapper">
 
   <header class="main-header">
-    <div class="main-header__container container">
-      <h1 class="visually-hidden">YetiCave</h1>
-      <a class="main-header__logo" href="index.php">
-        <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
-      </a>
-      <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
-        <input type="search" name="search" placeholder="Поиск лота">
-        <input class="main-header__search-btn" type="submit" name="find" value="Найти">
-      </form>
-      <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
-      <nav class="user-menu">
-        <ul class="user-menu__list">
-          <li class="user-menu__item">
-            <a href="sign-up.html">Регистрация</a>
-          </li>
-          <li class="user-menu__item">
-            <a href="login.html">Вход</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <div class="main-header__container container">
+    <h1 class="visually-hidden">YetiCave</h1>
+    <a class="main-header__logo" href="index.php">
+      <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
+    </a>
+    <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
+      <input type="search" name="search" placeholder="Поиск лота">
+      <input class="main-header__search-btn" type="submit" name="find" value="Найти">
+    </form>
+    <a class="main-header__add-lot button" href="add-lot.php">Добавить лот</a>
+    <nav class="user-menu">
+      <div class="user-menu__logged">
+        <p>#user_name#</p>
+        <a class="user-menu__bets" href="my-bets.html">Мои ставки</a>
+        <a class="user-menu__logout" href="#">Выход</a>
+      </div>
+    </nav>
+  </div>
+</header>
 
   <main>
-    
     <nav class="nav">
       <ul class="nav__list container">
-      <?php foreach($categories as $cat): ?>
-      <li class="nav__item">
-          <a href="pages/all-lots.html"><?=esc($cat['name']); ?></a>
-      </li>
-      <?php endforeach; ?>
+        <?php foreach($categories as $cat): ?>
+        <li class="nav__item">
+            <a href="pages/all-lots.html"><?=esc($cat['name']); ?></a>
+        </li>
+        <?php endforeach; ?>
       </ul>
     </nav>
-
-    <section class="lot-item container">
-
-      <h2><?=$lot['name'];?></h2>
-      
-      <div class="lot-item__content">
-        <div class="lot-item__left">
-          <div class="lot-item__image">
-            <img src="<?=$lot['img_url']; ?>" alt="<?=$lot['name']; ?>" width="730" height="548" alt="Сноуборд">
-          </div>
-          <p class="lot-item__category">Категория: <span><?=$lot['category_name'];?></span></p>
-          <p class="lot-item__description"><?=$lot['description'];?></p>
+    <form class="form form--add-lot container form--invalid" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
+      <h2>Добавление лота</h2>
+      <div class="form__container-two">
+        <div class="form__item form__item--invalid"> <!-- form__item--invalid -->
+          <label for="lot-name">Наименование <sup>*</sup></label>
+          <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота">
+          <span class="form__error">Введите наименование лота</span>
         </div>
-        <div class="lot-item__right">
-          <div class="lot-item__state">
-            <div class="lot-item__timer timer <?=get_end_class($lot['end_date'])?>">
-              <?=implode(':', get_time_end($lot['end_date'])); ?>
-            </div>
-            <div class="lot-item__cost-state">
-              <div class="lot-item__rate">
-                <span class="lot-item__amount">Текущая цена</span>
-                <span class="lot-item__cost"><?=to_price(get_last_price($lot));?></span>
-              </div>
-              <div class="lot-item__min-cost">
-                Мин. ставка <span>12 000 р</span>
-              </div>
-            </div>
-            <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post" autocomplete="off">
-              <p class="lot-item__form-item form__item form__item--invalid">
-                <label for="cost">Ваша ставка</label>
-                <input id="cost" type="text" name="cost" placeholder="12 000">
-                <span class="form__error">Введите наименование лота</span>
-              </p>
-              <button type="submit" class="button">Сделать ставку</button>
-            </form>
-          </div>
-          <div class="history">
-            <h3>История ставок (<span>10</span>)</h3>
-            <table class="history__list">
-              <tr class="history__item">
-                <td class="history__name">Иван</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">5 минут назад</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Константин</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">20 минут назад</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Евгений</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">Час назад</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Игорь</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">19.03.17 в 08:21</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Енакентий</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">19.03.17 в 13:20</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Семён</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">19.03.17 в 12:20</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Илья</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">19.03.17 в 10:20</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Енакентий</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">19.03.17 в 13:20</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Семён</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">19.03.17 в 12:20</td>
-              </tr>
-              <tr class="history__item">
-                <td class="history__name">Илья</td>
-                <td class="history__price">10 999 р</td>
-                <td class="history__time">19.03.17 в 10:20</td>
-              </tr>
-            </table>
-          </div>
+        <div class="form__item">
+          <label for="category">Категория <sup>*</sup></label>
+          <select id="category" name="category">
+            <option>Выберите категорию</option>
+
+            <?php foreach($categories as $cat): ?>
+            <option value="<?=$cat['id'] ?>">
+                <?=esc($cat['name']); ?>
+            </option>
+            <?php endforeach; ?>
+
+          </select>
+          <span class="form__error">Выберите категорию</span>
         </div>
       </div>
-    </section>
+      <div class="form__item form__item--wide">
+        <label for="message">Описание <sup>*</sup></label>
+        <textarea id="message" name="message" placeholder="Напишите описание лота"></textarea>
+        <span class="form__error">Напишите описание лота</span>
+      </div>
+      <div class="form__item form__item--file">
+        <label>Изображение <sup>*</sup></label>
+        <div class="form__input-file">
+          <input class="visually-hidden" type="file" id="lot-img" value="" name="lot_img">
+          <label for="lot-img">
+            Добавить
+          </label>
+        </div>
+      </div>
+      <div class="form__container-three">
+        <div class="form__item form__item--small">
+          <label for="lot-rate">Начальная цена <sup>*</sup></label>
+          <input id="lot-rate" type="text" name="lot-rate" placeholder="0">
+          <span class="form__error">Введите начальную цену</span>
+        </div>
+        <div class="form__item form__item--small">
+          <label for="lot-step">Шаг ставки <sup>*</sup></label>
+          <input id="lot-step" type="text" name="lot-step" placeholder="0">
+          <span class="form__error">Введите шаг ставки</span>
+        </div>
+        <div class="form__item">
+          <label for="lot-date">Дата окончания торгов <sup>*</sup></label>
+          <input class="form__input-date" id="lot-date" type="text" name="lot-date" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+          <span class="form__error">Введите дату завершения торгов</span>
+        </div>
+      </div>
+      <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+
+      <?php if (isset($errors)): ?>
+        <div class="form__errors">
+          <ul>
+            <?php foreach ($errors as $val): ?>
+                <li><strong><?= $val; ?>:</strong></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      <?php endif; ?>
+      
+      <button type="submit" class="button">Добавить лот</button>
+    </form>
   </main>
 
 </div>
@@ -145,24 +117,11 @@
 <footer class="main-footer">
   <nav class="nav">
     <ul class="nav__list container">
-      <li class="nav__item">
-        <a href="all-lots.html">Доски и лыжи</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Крепления</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Ботинки</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Одежда</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Инструменты</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Разное</a>
-      </li>
+      <?php foreach($categories as $cat): ?>
+        <li class="nav__item">
+            <a href="pages/all-lots.html"><?=esc($cat['name']); ?></a>
+        </li>
+      <?php endforeach; ?>
     </ul>
   </nav>
   <div class="main-footer__bottom container">
@@ -207,5 +166,7 @@
   </div>
 </footer>
 
+<script src="../flatpickr.js"></script>
+<script src="../script.js"></script>
 </body>
 </html>

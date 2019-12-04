@@ -90,6 +90,12 @@ function get_last_price($lot)
     return $lot['last_price'] ?? $lot['first_price'];
 }
 
+// функция сохранения введенного в поле значения
+function get_post_val($name)
+{
+    return filter_input(INPUT_POST, $name);
+}
+
 // функция валидации существования категории
 function validateCategory($id, $allowed_list)
 {

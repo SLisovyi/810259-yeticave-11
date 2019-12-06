@@ -8,8 +8,10 @@
   <link href="../css/flatpickr.min.css" rel="stylesheet">
 </head>
 <body>
-<?=var_dump($lot);?></br>
-<?=var_dump($_FILES);?></br>
+<?=var_dump($lot);?></br></br>
+<?=var_dump($_FILES);?></br></br>
+<?=var_dump($errors); ?>
+
 <div class="page-wrapper">
 
   <header class="main-header">
@@ -43,6 +45,7 @@
         <?php endforeach; ?>
       </ul>
     </nav>
+    
     <form class="form form--add-lot container form--invalid" name="add_lot" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
       <h2>Добавление лота</h2>
       <div class="form__container-two">
@@ -59,7 +62,7 @@
             <?php foreach($categories as $cat): ?>
              <option value="<?= $cat['id'] ?>"<?php if ($cat['id'] == get_post_val('category_id')): ?>selected<?php endif; ?>><?=$cat['name'];?></option>
             <?php endforeach; ?>
-             
+
             </option>
           </select>
           <span class="form__error">Выберите категорию</span>

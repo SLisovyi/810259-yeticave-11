@@ -10,7 +10,8 @@
 <body>
 <?=var_dump($lot);?></br></br>
 <?=var_dump($_FILES);?></br></br>
-<?=var_dump($errors); ?>
+<?=var_dump($errors); ?></br></br>
+
 
 <div class="page-wrapper">
 
@@ -107,7 +108,7 @@
         <div class="form__errors">
           <ul>
             <?php foreach ($errors as $val): ?>
-                <li><strong><?= $val; ?>:</strong></li>
+                <li><strong><?= $val; ?>!</strong></li>
             <?php endforeach; ?>
           </ul>
         </div>

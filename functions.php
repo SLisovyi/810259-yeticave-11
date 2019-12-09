@@ -102,7 +102,7 @@ function validateCategory($id, $allowed_list)
     if (!in_array($id, $allowed_list)) {
         return "Указана несуществующая категория";
     }
-    return null;
+    return 'null';
 }
 
 // функция валидации заполнения
@@ -112,5 +112,13 @@ function validateNotEmpty($value)
         return "Поле не обязательно для заполнения";
     }
     return null;
+}
+
+// Проверяет переданную дату
+function date_diff_in_days($date1, $date2) {
+    if (strtotime($date1) - strtotime($date1) >= 86400) {
+        return true
+    }
+    return false
 }
 

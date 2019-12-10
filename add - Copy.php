@@ -5,80 +5,114 @@ require_once 'functions.php';
 require_once 'init.php'; // подключаем БД
 
 $categories = get_db_categories($link); // берем из БД список категорий и превращаем в двумерный массив
+
 $cats_ids = array_column($categories, 'id');
 
+// Если метод POST, значит сценарий был вызван отправкой формы (Общая проверкa)
+$errors = [];
+$lot = [];
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  $required = ['lot-name', 'message', 'lot-rate', 'lot-date', 'lot-step', 'user_id', 'category'];
-  $errors = [];
-  
-  $rules = [
-    'category_id' => function($value) use ($cats_ids) {
-        return validateCategory($value, $cats_ids);
-    }
-  
-  ];
+  // получим массив из формы
+  $lot = filter_input_array(INPUT_POST, [
+    'name' => FILTER_DEFAULT,
+    'description' => FILTER_DEFAULT,
+    'img_url' => FILTER_DEFAULT,
+    'first_price' => FILTER_DEFAULT,
+    'end_date' => FILTER_DEFAULT,
+    'bid_step' => FILTER_DEFAULT,
+    'category_id' => FILTER_DEFAULT
+  ], true);
 
-  $lot = filter_input_array(INPUT_POST, ['title' => FILTER_DEFAULT, 'description' => FILTER_DEFAULT, 'category_id' => FILTER_DEFAULT], true);
-
-  foreach ($lot as $key => $value) {
-    if (isset($rules[$key])) {
-        $rule = $rules[$key];
-        $errors[$key] = $rule($value);
-    }
-
-    if (in_array($key, $required) && empty($value)) {
-        $errors[$key] = "Поле $key надо заполнить";
-    }
-}
-
-$errors = array_filter($errors);
-
-  $lot = $_POST;
-
-  if (!empty($_FILES['lot_img']['name'])) {
-		$tmp_name = $_FILES['lot_img']['tmp_name'];
-		$path = $_FILES['lot_img']['name'];
-    $filename = uniqid() . '.jpg';
-
-		$finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $file_type = finfo_file($finfo, $tmp_name);
-    
-    if ($file_type !== "image/jpg") {
-			$errors['file'] = 'Загрузите картинку в формате jpg';
-    }
-    else {
-			move_uploaded_file($tmp_name, 'uploads/' . $filename);
-			$lot['img_url'] = $filename;
-		}
+  // Проверку заполнения обязательных полей, по списку п.1
+  if (empty($lot['name'])) {
+    $errors['name'] = 'Заполните Наименование лота';
   }
-  else {
-		$errors['file'] = 'Вы не загрузили файл';
+  if (empty($lot['description'])) {
+    $errors['description'] = 'Заполните Описание лота';
   }
+  if (empty($lot['first_price'])) {
+    $errors['first_price'] = 'Заполните Начальная цена';
+  }
+  if (empty($lot['bid_step'])) {
+    $errors['bid_step'] = 'Заполните Шаг ставки';
+  }
+  if (empty($lot['category_id'])) {
+    $errors['category_id'] = 'Заполните Категория';
+  }
+  if (empty($lot['end_date'])) {
+    $errors['end_date'] = 'Заполните Дата завершения';
+  }
+  // Проверку конкретных полей п.2
+  if (empty($errors)) {
+    // Проверку существования категории с указанным id
+    $errors['category_id'] = validateCategory($lot['category_id'], $cats_ids);
+    // Проверкa начальной цены
+    if (!is_numeric($lot['bid_step']) || !is_int($lot['bid_step'] * 1) || !intval($lot['bid_step']) > 0) {
+      $errors['bid_step'] = 'Содержимое поля «шаг ставки» должно быть целым числом больше ноля.';
+    }
+    // Проверкa шага ставки
+    if (!is_numeric($lot['first_price']) || !is_int($lot['first_price'] * 1) || !intval($lot['first_price']) > 0) {
+      $errors['first_price'] = 'Содержимое поля «начальная цена» должно быть числом больше нуля';
+    }
+    // Проверка даты завершения
+    if (!is_date_valid($lot['end_date']) && date_diff_in_days(date("Y-m-d H:i:s"), $lot['end_date'])) {
+      $errors['first_price'] = 'Дата завершения должна быть больше текущей даты, хотя бы на один день';
+    }
+  }
+
+
+  //  отфильтровать пустые значения из масива ошибок if (empty errors) {
+    $errors = array_filter($errors, function($element) {
+      return !empty($element);
+  });
+
+  if (empty($errors)) {
+    if (!empty($_FILES['img_url']['name'])) {
+      // получим img из формы
+      $tmp_name = $_FILES['img_url']['tmp_name'];
+      $path = $_FILES['img_url']['name'];
+      $ext = pathinfo($path, PATHINFO_EXTENSION);
+      $filename = uniqid() . $ext;
+      $finfo = finfo_open(FILEINFO_MIME_TYPE);
+      $file_type = finfo_file($finfo, $tmp_name);
   
-  if (count($errors)) {
-		$page = include_template('add.php', ['errors' => $errors, 'categories' => $categories]);
-	}
-  else {
-    $sql = 'INSERT INTO lot (date_add, name, description, img_url, first_price, end_date, bid_step, user_id, category_id, winner_id) VALUES (NOW(), ?, ?, ?, ?, ?, ?, 1, ?, ?)';
-    $stmt = db_get_prepare_stmt($link, $sql, $lot);
-    $res = mysqli_stmt_execute($stmt);
+      if ($file_type !== "image/jpeg" && $file_type !== "image/png") { // ошибка с проверкой типа файла jpg -> jpeg
+        $errors['img_url'] = 'Загрузите картинку в формате jpg or png';
+      } else {
+        move_uploaded_file($tmp_name, 'uploads/' . $filename);
+        $lot['img_url'] = $filename;
+      }  
+    } else {
+      $errors['img_url'] = 'Вы не загрузили файл';
+    }
+  }
+
   
-    if ($res) {
+ 
+  
+} else {  // формируем массив лота и сохраняем его
+  $sql = 'INSERT INTO lot (date_add, user_id,  name, description, img_url, first_price, end_date, bid_step, category_id) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+  $stmt = db_get_prepare_stmt($link, $sql, $lot);
+  $res = mysqli_stmt_execute($stmt);
+
+  if ($res) {
       $lot_id = mysqli_insert_id($link);
-      header('Location: lot.php?id=' . $lot_id);
-    }
-    else {
-      $page_content = include_template('add.php', ['categories' => $categories]);
-    }
+
+      header("Location: lot.php?id=" . $lot_id);
   }
 }
+
+
 
 $page = include_template('add-lot.php', [
-  'categories' => $categories
+  'categories' => $categories,
+  'lot' => $lot,
+  'errors' => $errors,
+  'new_array' => $new_array
 ]);
 
 print($page);

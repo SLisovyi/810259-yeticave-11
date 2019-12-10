@@ -35,6 +35,7 @@
     </nav>
   </div>
 </header>
+<?php var_dump(strtotime($lot['end_date']) - time() > 8400);?>strtotime($lot['end_date']) - time() > 8400<br>
 
   <main>
     <nav class="nav">
@@ -50,12 +51,14 @@
     <form class="form form--add-lot container form--invalid" name="add_lot" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
       <h2>Добавление лота</h2>
       <div class="form__container-two">
-        <div class="form__item form__item--invalid"> <!-- form__item--invalid -->
+        <div class="form__item <?php isset($errors['name']) ? "form__item--invalid" : ""; ?>"> <!-- form__item--invalid -->
           <label for="lot-name">Наименование <sup>*</sup></label>
           <input id="lot-name" type="text" name="name" value="<?=get_post_val('name');?>" placeholder="Введите наименование лота">
-          <span class="form__error">Введите наименование лота</span>
+
+          <span class="form__error"><?=$errors['name'] ?? "";?></span>
+
         </div>
-        <div class="form__item">
+        <div class="form__item <?php isset($errors['category_id']) ? "form__item--invalid" : ""; ?>">
           <label for="category">Категория <sup>*</sup></label>
           <select id="category" name="category_id">
             <option>Выберите категорию</option>
@@ -66,15 +69,15 @@
 
             </option>
           </select>
-          <span class="form__error">Выберите категорию</span>
+          <span class="form__error"><?=$errors['category_id'] ?? "";?></span>
         </div>
       </div>
-      <div class="form__item form__item--wide">
+      <div class="form__item form__item--wide <?php isset($errors['description']) ? "form__item--invalid" : ""; ?>">
         <label for="message">Описание <sup>*</sup></label>
         <textarea id="message" name="description" placeholder="Напишите описание лота">
-          <?=get_post_val('description');?><!-- при перезагрузке добавляются пробелы -->
+          <?=get_post_val('description');?>
         </textarea>
-        <span class="form__error">Напишите описание лота</span>
+        <span class="form__error"><?=$errors['description'] ?? "";?></span>
       </div>
       <div class="form__item form__item--file">
         <label>Изображение <sup>*</sup></label>
@@ -86,23 +89,25 @@
         </div>
       </div>
       <div class="form__container-three">
-        <div class="form__item form__item--small">
+        <div class="form__item form__item--small <?php isset($errors['first_price']) ? "form__item--invalid" : ""; ?>">
           <label for="lot-rate">Начальная цена <sup>*</sup></label>
           <input id="lot-rate" type="text" name="first_price" placeholder="0" value="<?=get_post_val('first_price');?>">
-          <span class="form__error">Введите начальную цену</span>
+          <span class="form__error"><?=$errors['first_price'] ?? "";?></span>
         </div>
-        <div class="form__item form__item--small">
+        <div class="form__item form__item--small <?php isset($errors['bid_step']) ? "form__item--invalid" : ""; ?>">
           <label for="lot-step">Шаг ставки <sup>*</sup></label>
           <input id="lot-step" type="text" name="bid_step" placeholder="0" value="<?=get_post_val('bid_step');?>">
-          <span class="form__error">Введите шаг ставки</span>
+          <span class="form__error"><?=$errors['bid_step'] ?? "";?></span>
         </div>
-        <div class="form__item">
+        <div class="form__item <?php isset($errors['end_date']) ? "form__item--invalid" : ""; ?>">
           <label for="lot-date">Дата окончания торгов <sup>*</sup></label>
           <input class="form__input-date" id="lot-date" type="text" name="end_date" placeholder="Введите дату в формате ГГГГ-ММ-ДД" value="<?=get_post_val('end_date');?>">
-          <span class="form__error">Введите дату завершения торгов</span>
+          <span class="form__error"><?=$errors['end_date'] ?? "";?></span>
         </div>
       </div>
-      <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+      <span class="form__error form__error--bottom">
+      <?php isset($errors) ? "Пожалуйста, исправьте ошибки в форме." : ""; ?>
+      </span>
 
       <?php if (isset($errors)): ?>
         <div class="form__errors">

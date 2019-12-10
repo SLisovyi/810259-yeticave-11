@@ -8,12 +8,10 @@ $categories = get_db_categories($link); // берем из БД список к�
 
 $cats_ids = array_column($categories, 'id');
 
-// Если метод POST, значит сценарий был вызван отправкой формы (Общая проверкa)
 $errors = [];
 $lot = [];
 
-
-
+// Если метод POST, значит сценарий был вызван отправкой формы (Общая проверкa)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   // получим массив из формы
@@ -51,23 +49,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Проверку существования категории с указанным id
     $errors['category_id'] = validateCategory($lot['category_id'], $cats_ids);
     // Проверкa начальной цены
-    if (!is_numeric($lot['bid_step']) || !is_int($lot['bid_step'] * 1) || !intval($lot['bid_step']) > 0) {
-      $errors['bid_step'] = 'Содержимое поля «шаг ставки» должно быть целым числом больше ноля.';
-    }
-    // Проверкa шага ставки
     if (!is_numeric($lot['first_price']) || !is_int($lot['first_price'] * 1) || !intval($lot['first_price']) > 0) {
       $errors['first_price'] = 'Содержимое поля «начальная цена» должно быть числом больше нуля';
     }
+    // Проверкa шага ставки
+    if (!is_numeric($lot['bid_step']) || !is_int($lot['bid_step'] * 1) || !intval($lot['bid_step']) > 0) {
+      $errors['bid_step'] = 'Содержимое поля «шаг ставки» должно быть целым числом больше нуля';
+    }
     // Проверка даты завершения
-    if (!is_date_valid($lot['end_date']) && date_diff_in_days(date("Y-m-d H:i:s"), $lot['end_date'])) {
-      $errors['first_price'] = 'Дата завершения должна быть больше текущей даты, хотя бы на один день';
+    if (!is_date_valid($lot['end_date']) || strtotime($lot['end_date']) - time() > 8400) {
+      $errors['end_date'] = 'Дата завершения должна быть больше текущей даты, хотя бы на один день';
     }
   }
-
-
   //  отфильтровать пустые значения из масива ошибок if (empty errors) {
-    $errors = array_filter($errors, function($element) {
-      return !empty($element);
+  $errors = array_filter($errors, function($element) {
+    return !empty($element);
   });
 
   if (empty($errors)) {
@@ -79,40 +75,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $filename = uniqid() . $ext;
       $finfo = finfo_open(FILEINFO_MIME_TYPE);
       $file_type = finfo_file($finfo, $tmp_name);
-  
+
       if ($file_type !== "image/jpeg" && $file_type !== "image/png") { // ошибка с проверкой типа файла jpg -> jpeg
         $errors['img_url'] = 'Загрузите картинку в формате jpg or png';
       } else {
         move_uploaded_file($tmp_name, 'uploads/' . $filename);
         $lot['img_url'] = $filename;
-      }  
+      }
     } else {
       $errors['img_url'] = 'Вы не загрузили файл';
     }
   }
 
-  
- 
-  
-} else {  // формируем массив лота и сохраняем его
-  $sql = 'INSERT INTO lot (date_add, user_id,  name, description, img_url, first_price, end_date, bid_step, category_id) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
-  $stmt = db_get_prepare_stmt($link, $sql, $lot);
-  $res = mysqli_stmt_execute($stmt);
+  //  отфильтровать пустые значения из масива ошибок if (empty errors) {
+  $errors = array_filter($errors, function($element) {
+    return !empty($element);
+  });
 
-  if ($res) {
+  if (empty($errors)) {
+    // формируем массив лота и сохраняем его
+    $sql = 'INSERT INTO lot (date_add, user_id,  name, description, img_url, first_price, end_date, bid_step, category_id) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+    $stmt = db_get_prepare_stmt($link, $sql, $lot);
+    $res = mysqli_stmt_execute($stmt);
+
+    if ($res) {
       $lot_id = mysqli_insert_id($link);
 
       header("Location: lot.php?id=" . $lot_id);
+    }
   }
 }
-
-
 
 $page = include_template('add-lot.php', [
   'categories' => $categories,
   'lot' => $lot,
-  'errors' => $errors,
-  'new_array' => $new_array
+  'errors' => $errors
 ]);
 
 print($page);

@@ -124,3 +124,12 @@ function date_diff_in_days($date)
     }
     return false;
 }
+
+// Проверяет наличие ошибки
+function if_isset_error($error, $text)
+{
+    if (isset($error)) {
+        return $text;
+    }
+    return '';
+}

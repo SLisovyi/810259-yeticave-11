@@ -39,7 +39,7 @@ function get_end_class($time)
 // функция получения $categories array из БД
 function get_db_categories($link)
 {
-    $sql = 'SELECT name, character_code FROM category';
+    $sql = 'SELECT id, name, character_code FROM category';
 
     $result_query = mysqli_query($link, $sql);
 
@@ -85,6 +85,51 @@ function get_db_lot_by_id($link, $id)
 }
 
 // функция вывода конечной цены лота
-function get_last_price($lot) {
+function get_last_price($lot)
+{
     return $lot['last_price'] ?? $lot['first_price'];
+}
+
+// функция сохранения введенного в поле POST значения
+function get_post_val($name)
+{
+    return filter_input(INPUT_POST, $name);
+}
+
+// функция валидации существования категории
+function validateCategory($id, $allowed_list)
+{
+    if (!in_array($id, $allowed_list)) {
+        return "Указана несуществующая категория";
+    }
+    return null;
+}
+
+// функция валидации заполнения
+function validateNotEmpty($value)
+{
+    if (empty($value)) {
+        return "Поле не обязательно для заполнения";
+    }
+    return null;
+}
+
+// Проверяет переданную дату
+function date_diff_in_days($date)
+{
+    $diff = strtotime($date) - time();
+    // strtotime('2019-12-10') - strtotime(date("Y-m-d H:i:s"))
+    if ($diff > 86400) {
+        return true;
+    }
+    return false;
+}
+
+// Проверяет наличие ошибки
+function if_isset_error($error, $text)
+{
+    if (isset($error)) {
+        return $text;
+    }
+    return '';
 }
